@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Facebook SPT Overlay</title>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
+            window.fbAsyncInit = function() {
+              FB.init({
+                appId            : '1142565266138716',
+                autoLogAppEvents : true,
+                xfbml            : true,
+                version          : 'v8.0'
+              });
+            };
+          </script>
+          <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+
+        <link rel="stylesheet" type="text/css" href="main.css" />
+        <script defer src="app.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <div id="stats"></div>
+            <div id="chat"></div>
+        </div>
+
+        <div id="tools">
+            <a href="javascript:app.login()">Login</a>
+            <a href="javascript:app.popOut()">Pop-Out</a>
+            <a href="javascript:app.pause()">Pause</a>
+            <a href="javascript:app.mock()">Mock</a>
+        </div>
+    </body>
+</html>

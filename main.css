@@ -1,0 +1,73 @@
+@font-face {
+    font-family: futura-mt;
+    src: url("FuturaPTMedium.otf") format("opentype");
+}
+
+body {
+    margin:0;
+    font-family: futura-mt;
+    background-color: black;
+    color: white;
+}
+
+a {
+    color: white;
+}
+
+#app {
+    border: 5px solid #f67979;
+    border-radius: 5px;
+    color: #f67979;
+    width: 780px;
+    height: 400px;
+    padding: 15px;
+
+}
+
+#tools {
+    margin-top: 10px;
+    text-align: center;
+}
+
+#tools a {
+    margin-right: 50px;
+}
+
+#stats {
+    height: 50px;
+    font-weight: bold;
+    font-size: 20pt;
+    text-align: center;
+    
+}
+
+#stats span {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#stats .changed {
+    text-shadow: 0 0 10px #fff, 0 0 20px #f8a0a0;
+}
+
+#chat {
+    height: 350px;
+    font-size: 16pt;
+
+    overflow-y: scroll;
+    overscroll-behavior-y: contain;
+}
+
+#chat::-webkit-scrollbar {
+    display: none;
+}
+
+
+.sender {
+    font-weight: bold;
+    margin-right: 20px;   
+}
+
+.sender:after {
+    content: ":"
+}
