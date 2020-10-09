@@ -37,7 +37,7 @@ a {
 #stats {
     height: 50px;
     font-weight: bold;
-    font-size: 20pt;
+    font-size: 26pt;
     text-align: center;
     
 }
@@ -53,7 +53,7 @@ a {
 
 #chat {
     height: 350px;
-    font-size: 16pt;
+    font-size: 20pt;
 
     overflow-y: scroll;
     overscroll-behavior-y: contain;
