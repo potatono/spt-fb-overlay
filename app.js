@@ -14,6 +14,8 @@ class App {
     }
 
     start() {
+        window.addEventListener("message", evt => this.handleMessage(evt))
+
         if (!this.token) {
             this.chat("SYSTEM", "Use login button to connect to Facebook")
             return
@@ -176,6 +178,28 @@ class App {
         this.chat("Justin Day", "Let's kill some robots!")
         this.chat("Bob Smith", "WTF is this even?")
         this.chat("Jerf Somalian", "Jorston!")
+    }
+
+    importStats(stats) {
+        for (var key in stats) {
+                if (!(key in this) || stats[key] >= this[key]) {
+                    this[key + "Old"] = this[key]
+                    this[key] = stats[key]
+            }
+        }
+        this.updateStats()
+    }
+
+    handleMessage(evt) {
+        console.log(evt)
+        var data = evt.data
+        console.log(data.cmd)
+        if (data.cmd == "chat")
+            this.chat(data.name, data.message)
+        else if (data.cmd == "stats")
+            this.importStats(data.stats)
+        else if (data.cmd == "resetChat")
+            this.resetChat()        
     }
 }
 
