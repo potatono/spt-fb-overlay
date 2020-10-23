@@ -5,7 +5,7 @@
 // @version      0.1
 // @description  Pulls comments / reactions from a live video so you can insert them into a stream
 // @author       Justin Day
-// @include      /^https:\/\/www\.facebook\.com\/\w*\/videos\/.*/
+// @include      /^https:\/\/www\.facebook\.com\/[\w\.]*\/videos\/.*/
 // @grant        none
 // ==/UserScript==
 
@@ -14,18 +14,34 @@
     var popWindow;
     var timer;
     var stats = {};
+    var lastCommentName;
+    var lastCommentMsg;
 
     // Your code here...
     function mutationListener(e) {
         var ele = e.srcElement;
+
         if (/^Comment by /.test(ele.getAttribute && ele.getAttribute('aria-label'))) {
             var textSpans = Array.from(ele.getElementsByTagName('span')).filter(span => span.dir == "auto");
-            //console.log(textSpans[0].innerText + ": " + textSpans[1].innerText)
-            //popWindow.app.chat(textSpans[0].innerText, textSpans[1].innerText)
-            var msg = textSpans.pop().innerText
-            var name = textSpans.pop().innerText
-            var data = { "cmd": "chat", "name": name, "message": msg }
-            popWindow.postMessage(data, "*")
+            var texts = textSpans.map(span => span.innerText)
+
+            if (/^Replying to/.test(texts[0])) {
+                texts.shift()
+            }
+            else if (texts[0] == "JPLT") {
+                texts.shift()
+                texts.reverse()
+            }
+
+            var name = texts[0]
+            var msg = texts[1]
+
+            if (name != lastCommentName || msg != lastCommentMsg) {
+                lastCommentName = name
+                lastCommentMsg = msg
+                var data = { "cmd": "chat", "name": name, "message": msg }
+                popWindow.postMessage(data, "*")
+            }
         }
 
         if (ele.tagName == "IMG" && /reaction/.test(ele.src)) {
@@ -34,7 +50,7 @@
             stats[key] = (stats[key] || 0) + 1
         }
 
-        var img = ele.querySelector('img');
+        var img = ele.querySelector && ele.querySelector('img');
         if (img && /reaction/.test(img.src)) {
             reaction = img.src.split('/').pop().split('.')[0]
             key = reaction + "s"
@@ -73,7 +89,8 @@
         if (!timer) {
             document.addEventListener("DOMNodeInserted", mutationListener)
             timer = window.setInterval(timerListener, 5000)
-            var url = "http://localhost:8000/" //"https://www.justinday.com/spt-fb-overlay/"
+            //var url = "http://localhost:8000/"
+            var url = "https://www.justinday.com/spt-fb-overlay/"
             popWindow = window.open(url, "_blank", "width=840,height=510,scrollbars=no")
             window.setTimeout(() => popWindow.postMessage({"cmd":"resetChat"}, "*"), 500)
             window.setTimeout(initStats, 750)
